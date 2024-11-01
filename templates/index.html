@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Munch Meal Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-y: scroll;
+        }
+
+        body {
+            background-color: #f4e4bc;
+            background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+            color: #432818;
+            font-family: 'Source Serif Pro', serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            color: #783f28;
+            margin: 1rem 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            letter-spacing: 0.5px;
+            padding: 0 10px;
+        }
+
+        .recipe-card {
+            background-color: rgba(255, 250, 240, 0.8);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(98, 54, 29, 0.15);
+            border: 1px solid #d4b595;
+        }
+
+        .recipe-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: #783f28;
+            margin-bottom: 0.8rem;
+            border-bottom: 2px solid #d4b595;
+            padding-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .recipe-description {
+            font-style: italic;
+            color: #654321;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .recipe-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #a65d42;
+            margin-bottom: 0.8rem;
+        }
+
+        .ingredients-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ingredients-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #d4b595;
+            color: #654321;
+            font-size: 1rem;
+        }
+
+        .instructions-list {
+            padding-left: 1.2rem;
+            color: #654321;
+            margin: 0;
+        }
+
+        .instructions-list li {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            padding-left: 0.3rem;
+        }
+
+        .recipe-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+            box-shadow: 0 2px 4px rgba(98, 54, 29, 0.2);
+        }
+
+        form {
+            background-color: rgba(255, 250, 240, 0.8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(98, 54, 29, 0.15);
+            border: 1px solid #d4b595;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #783f28;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: rgba(255, 250, 240, 0.9);
+            border: 1px solid #d4b595;
+            border-radius: 8px;
+            color: #654321;
+            font-size: 16px;
+            font-family: 'Source Serif Pro', serif;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        select {
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23783f28'%3E%3Cpath d='M6 9L0 0h12'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #a65d42;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            font-family: 'Source Serif Pro', serif;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(98, 54, 29, 0.2);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        button:active {
+            background-color: #8b4513;
+            transform: translateY(1px);
+        }
+
+        .calories {
+            font-size: 1.1rem;
+            color: #a65d42;
+            margin-top: 1rem;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        input, select, button {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            min-height: 44px;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input:focus, select:focus, button:focus {
+            outline: 2px solid #a65d42;
+            outline-offset: -1px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .recipe-title {
+                font-size: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            form, .recipe-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Munch Meal Planner</h1>
+        
+        <form id="mealForm">
+            <div class="form-group">
+                <label>Dietary Restrictions</label>
+                <select id="diet">
+                    <option value="none">None</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="keto">Keto</option>
+                    <option value="paleo">Paleo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Allergies (comma-separated)</label>
+                <input type="text" id="allergies" placeholder="e.g., nuts, dairy, shellfish">
+            </div>
+            <div class="form-group">
+                <label>Daily Calorie Target</label>
+                <input type="number" id="calories" value="2000">
+            </div>
+            <div class="form-group">
+                <label>Available Ingredients (comma-separated)</label>
+                <input type="text" id="groceries" placeholder="e.g., chicken, rice, tomatoes, onions">
+            </div>
+            <button type="submit">Generate Recipe</button>
+        </form>
+
+        <div id="mealResult" style="display: none;" class="recipe-card">
+            <h2 id="mealType" class="recipe-title"></h2>
+            <div id="mealContent"></div>
+            <div id="mealImage"></div>
+        </div>
+
+        <div id="loadingIndicator" style="display: none;" class="recipe-card">
+            <p class="recipe-description">Generating your meal plan...</p>
+        </div>
+
+        <div id="errorMessage" style="display: none;" class="recipe-card">
+            <p class="recipe-description" style="color: #a65d42;"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        
+        document.getElementById('mealForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const mealResult = document.getElementById('mealResult');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Reset displays
+            mealResult.style.display = 'none';
+            errorMessage.style.display = 'none';
+            loadingIndicator.style.display = 'block';
+
+            try {
+                const calories = parseInt(document.getElementById('calories').value);
+                if (isNaN(calories) || calories < 500 || calories > 5000) {
+                    throw new Error('Please enter a valid calorie target between 500 and 5000');
+                }
+
+                const response = await fetch('/get-meal-suggestion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        diet: document.getElementById('diet').value,
+                        allergies: document.getElementById('allergies').value,
+                        calories: calories,
+                        groceries: document.getElementById('groceries').value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate meal plan');
+                }
+
+                if (data.success) {
+                    const mealData = JSON.parse(data.suggestion);
+                    
+                    document.getElementById('mealType').textContent = mealData.name;
+                    
+                    document.getElementById('mealContent').innerHTML = `
+                        <p class="recipe-description">${mealData.description}</p>
+                        
+                        <div class="recipe-section">
+                            <h3 class="section-title">Ingredients</h3>
+                            <ul class="ingredients-list">
+                                ${mealData.ingredients.map(ing => `<li>${ing}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="recipe-section">
+                            <h3 class="section-title">Instructions</h3>
+                            <ol class="instructions-list">
+                                ${mealData.instructions.map(inst => `<li>${inst}</li>`).join('')}
+                            </ol>
+                        </div>
+
+                        <div class="calories">
+                            ${mealData.calories}
+                        </div>
+
+                        ${mealData.additional_needed ? `
+                            <div class="recipe-section">
+                                <h3 class="section-title">Additional Ingredients Needed</h3>
+                                <ul class="ingredients-list">
+                                    ${mealData.additional_needed.map(ing => `<li>${ing}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                    `;
+
+                    if (data.image_url) {
+                        document.getElementById('mealImage').innerHTML = 
+                            `<img src="${data.image_url}" alt="Recipe Image" class="recipe-image">`;
+                    }
+
+                    mealResult.style.display = 'block';
+                    
+                    // Smooth scroll to results
+                    mealResult.scrollIntoView({ behavior: 'smooth' });
+
+                    loadingIndicator.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loadingIndicator.style.display = 'none';
+                errorMessage.querySelector('p').textContent = error.message;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
