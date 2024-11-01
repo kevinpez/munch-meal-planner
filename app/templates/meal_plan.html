@@ -1,0 +1,17 @@
+<!-- app/templates/meal_plan.html -->
+{% extends "base.html" %}
+{% block content %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% else %}
+        {% if image_url %}
+            <div class="meal-image">
+                <img src="{{ image_url }}" alt="Meal Image" style="max-width: 400px; margin: 20px 0;">
+            </div>
+        {% endif %}
+        <div class="meal-description">
+            <h3>Your Suggested Meal</h3>
+            <p>{{ meal }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

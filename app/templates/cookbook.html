@@ -1,0 +1,18 @@
+<!-- app/templates/cookbook.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Cookbook</h2>
+<ul>
+    {% for recipe in recipes %}
+    <li>
+        <h3>{{ recipe.name }}</h3>
+        {% if recipe.ingredients %}
+        <p><strong>Ingredients:</strong><br>{{ recipe.ingredients|linebreaks }}</p>
+        {% endif %}
+        {% if recipe.instructions %}
+        <p><strong>Instructions:</strong><br>{{ recipe.instructions|linebreaks }}</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

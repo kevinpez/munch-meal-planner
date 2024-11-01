@@ -1,0 +1,10 @@
+<!-- app/templates/grocery_list.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Your Grocery List</h2>
+<ul>
+    {% for ingredient in ingredients %}
+    <li>{{ ingredient }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
