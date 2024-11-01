@@ -1,18 +1,28 @@
 <!-- app/templates/cookbook.html -->
 {% extends "base.html" %}
 {% block content %}
-<h2>Your Cookbook</h2>
-<ul>
+<h2 class="mb-4">Your Cookbook</h2>
+<div class="row">
     {% for recipe in recipes %}
-    <li>
-        <h3>{{ recipe.name }}</h3>
-        {% if recipe.ingredients %}
-        <p><strong>Ingredients:</strong><br>{{ recipe.ingredients|linebreaks }}</p>
-        {% endif %}
-        {% if recipe.instructions %}
-        <p><strong>Instructions:</strong><br>{{ recipe.instructions|linebreaks }}</p>
-        {% endif %}
-    </li>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">{{ recipe.name }}</h3>
+                {% if recipe.ingredients %}
+                <div class="mb-3">
+                    <h4 class="h5">Ingredients:</h4>
+                    <p class="card-text">{{ recipe.ingredients|linebreaks }}</p>
+                </div>
+                {% endif %}
+                {% if recipe.instructions %}
+                <div>
+                    <h4 class="h5">Instructions:</h4>
+                    <p class="card-text">{{ recipe.instructions|linebreaks }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

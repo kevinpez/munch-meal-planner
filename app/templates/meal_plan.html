@@ -2,16 +2,89 @@
 {% extends "base.html" %}
 {% block content %}
     {% if error %}
-        <p class="error">{{ error }}</p>
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
     {% else %}
-        {% if image_url %}
-            <div class="meal-image">
-                <img src="{{ image_url }}" alt="Meal Image" style="max-width: 400px; margin: 20px 0;">
+        <div class="recipe-card">
+            {% if image_url %}
+                <div class="recipe-image">
+                    <img src="{{ image_url }}" alt="{{ meal.name }}" class="img-fluid rounded">
+                </div>
+            {% endif %}
+            
+            <div class="recipe-content">
+                <h2 class="recipe-title">{{ meal.name }}</h2>
+                <div class="recipe-description">{{ meal.description }}</div>
+                
+                <div class="recipe-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Prep Time:</span> {{ meal.prep_time }}
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Cook Time:</span> {{ meal.cook_time }}
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Total Time:</span> {{ meal.total_time }}
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Servings:</span> {{ meal.servings }}
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Calories:</span> {{ meal.calories }}
+                    </div>
+                </div>
+
+                <div class="recipe-section">
+                    <h3>Ingredients</h3>
+                    <ul class="ingredients-list">
+                        {% for ingredient in meal.ingredients %}
+                            <li>{{ ingredient }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="recipe-section">
+                    <h3>Instructions</h3>
+                    <ol class="instructions-list">
+                        {% for instruction in meal.instructions %}
+                            <li>{{ instruction }}</li>
+                        {% endfor %}
+                    </ol>
+                </div>
+
+                <div class="recipe-section">
+                    <h3>Chef's Tips</h3>
+                    <ul class="tips-list">
+                        {% for tip in meal.tips %}
+                            <li>{{ tip }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="recipe-section">
+                    <h3>Health Benefits</h3>
+                    <ul class="benefits-list">
+                        {% for benefit in meal.benefits %}
+                            <li>{{ benefit }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="recipe-section">
+                    <h3>Dietary Information</h3>
+                    <div class="dietary-tags">
+                        {% for info in meal.dietary_info %}
+                            <span class="dietary-tag">{{ info }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <form method="post" action="{{ url_for('save_recipe') }}" class="mt-4">
+                    <input type="hidden" name="recipe_name" value="{{ meal.name }}">
+                    <button type="submit" class="btn btn-primary">Save to Cookbook</button>
+                </form>
             </div>
-        {% endif %}
-        <div class="meal-description">
-            <h3>Your Suggested Meal</h3>
-            <p>{{ meal }}</p>
         </div>
     {% endif %}
 {% endblock %}

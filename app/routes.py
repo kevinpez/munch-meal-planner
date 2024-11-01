@@ -3,6 +3,8 @@ from flask import render_template, request, redirect, url_for
 from app import app, db
 from app.models import Recipe
 import openai
+from app.prompts import get_meal_suggestion_prompt, get_recipe_details_prompt
+import json
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -11,24 +13,22 @@ def home():
 @app.route('/generate-meal-plan', methods=['POST'])
 def generate_meal_plan():
     preferences = request.form.get('preferences')
-    meal = get_single_meal(preferences)
-    if meal:
-        image_url = generate_image(meal)
-        return render_template('meal_plan.html', meal=meal, image_url=image_url)
+    meal_data = get_single_meal(preferences)
+    if meal_data:
+        image_url = generate_image(meal_data['name'])
+        return render_template('meal_plan.html', meal=meal_data, image_url=image_url)
     return render_template('meal_plan.html', error="Could not generate meal")
 
 def get_single_meal(preferences):
-    messages = [
-        {"role": "user", "content": f"Create a single meal suggestion based on these preferences: {preferences}. Respond with just the meal name and a brief one-line description."}
-    ]
     try:
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=messages,
-            max_tokens=100,
+            messages=get_meal_suggestion_prompt(preferences),
+            max_tokens=500,
             temperature=0.7,
+            response_format={ "type": "json_object" }
         )
-        return response.choices[0].message.content.strip()
+        return json.loads(response.choices[0].message.content)
     except Exception as e:
         print(f"Error generating meal: {e}")
         return None
@@ -60,32 +60,22 @@ def save_recipe():
     return redirect(url_for('cookbook'))
 
 def get_recipe_details(recipe_name):
-    messages = [
-        {"role": "user", "content": f"Provide a recipe for {recipe_name} with ingredients and step-by-step instructions."}
-    ]
     try:
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=messages,
+            messages=get_recipe_details_prompt(recipe_name),
             max_tokens=700,
             temperature=0.7,
+            response_format={ "type": "json_object" }
         )
-        recipe_text = response.choices[0].message.content.strip()
-        ingredients, instructions = parse_recipe(recipe_text)
-        return {'ingredients': ingredients, 'instructions': instructions}
+        recipe_data = json.loads(response.choices[0].message.content)
+        return {
+            'ingredients': '\n'.join(recipe_data['ingredients']),
+            'instructions': '\n'.join(recipe_data['instructions'])
+        }
     except Exception as e:
         print(f"Error fetching recipe details: {e}")
         return {'ingredients': '', 'instructions': ''}
-
-def parse_recipe(recipe_text):
-    try:
-        ingredients_part, instructions_part = recipe_text.split('Instructions:')
-        ingredients = ingredients_part.replace('Ingredients:', '').strip()
-        instructions = instructions_part.strip()
-    except ValueError:
-        ingredients = ''
-        instructions = recipe_text
-    return ingredients, instructions
 
 @app.route('/cookbook')
 def cookbook():
@@ -105,3 +95,8 @@ def compile_ingredients(recipes):
             ingredients.extend([item.strip() for item in recipe.ingredients.split('\n') if item.strip()])
     unique_ingredients = list(set(ingredients))
     return unique_ingredients
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()  # Reset failed DB sessions
+    return render_template('error.html', error=error), 500
