@@ -11,13 +11,13 @@
                 {% if recipe.ingredients %}
                 <div class="mb-3">
                     <h4 class="h5">Ingredients:</h4>
-                    <p class="card-text">{{ recipe.ingredients|linebreaks }}</p>
+                    <p class="card-text">{{ recipe.ingredients|replace('\n', '<br>')|safe }}</p>
                 </div>
                 {% endif %}
                 {% if recipe.instructions %}
                 <div>
                     <h4 class="h5">Instructions:</h4>
-                    <p class="card-text">{{ recipe.instructions|linebreaks }}</p>
+                    <p class="card-text">{{ recipe.instructions|replace('\n', '<br>')|safe }}</p>
                 </div>
                 {% endif %}
             </div>

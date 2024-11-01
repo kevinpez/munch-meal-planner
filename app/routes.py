@@ -1,5 +1,5 @@
 # app/routes.py
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from app import app, db
 from app.models import Recipe
 import openai
@@ -48,16 +48,37 @@ def generate_image(meal_description):
 
 @app.route('/save-recipe', methods=['POST'])
 def save_recipe():
-    recipe_name = request.form.get('recipe_name')
-    recipe_details = get_recipe_details(recipe_name)
-    new_recipe = Recipe(
-        name=recipe_name,
-        ingredients=recipe_details['ingredients'],
-        instructions=recipe_details['instructions']
-    )
-    db.session.add(new_recipe)
-    db.session.commit()
-    return redirect(url_for('cookbook'))
+    try:
+        recipe_name = request.form.get('recipe_name')
+        if not recipe_name:
+            flash('Recipe name is required', 'error')
+            return redirect(url_for('home'))
+
+        # Check if recipe already exists
+        existing_recipe = Recipe.query.filter_by(name=recipe_name).first()
+        if existing_recipe:
+            flash('Recipe already saved', 'info')
+            return redirect(url_for('cookbook'))
+
+        recipe_details = get_recipe_details(recipe_name)
+        if not recipe_details.get('ingredients') and not recipe_details.get('instructions'):
+            flash('Could not fetch recipe details', 'error')
+            return redirect(url_for('home'))
+
+        new_recipe = Recipe(
+            name=recipe_name,
+            ingredients=recipe_details['ingredients'],
+            instructions=recipe_details['instructions']
+        )
+        db.session.add(new_recipe)
+        db.session.commit()
+        flash('Recipe saved successfully!', 'success')
+        return redirect(url_for('cookbook'))
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error saving recipe: {str(e)}', 'error')
+        return redirect(url_for('home'))
 
 def get_recipe_details(recipe_name):
     try:
