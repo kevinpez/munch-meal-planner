@@ -13,8 +13,8 @@ class AIService:
             self.client = OpenAI(api_key=current_app.config['OPENAI_API_KEY'])
         return self.client
 
-    def generate_meal_suggestion(self, preferences: str, diet_type: Optional[str] = None) -> Optional[Dict[str, Any]]:
-        """Generate a meal suggestion based on user preferences and diet type."""
+    def generate_meal_suggestion(self, preferences: str, diet_type: Optional[str] = None, allergies: Optional[str] = None) -> Optional[Dict[str, Any]]:
+        """Generate a meal suggestion based on user preferences, diet type, and allergies."""
         try:
             client = self._ensure_client()
             sanitized_preferences = self.validate_and_clean_input(preferences)
@@ -39,7 +39,7 @@ class AIService:
                 model="gpt-3.5-turbo",
                 messages=[
                     {"role": "system", "content": system_message},
-                    {"role": "user", "content": get_meal_suggestion_prompt(sanitized_preferences, diet_type)}
+                    {"role": "user", "content": get_meal_suggestion_prompt(sanitized_preferences, diet_type, allergies)}
                 ],
                 temperature=0.7,
                 max_tokens=800,

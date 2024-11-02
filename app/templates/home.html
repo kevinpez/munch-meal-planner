@@ -4,6 +4,7 @@
 <h2>Welcome!</h2>
 
 <div class="diet-buttons-container mb-4">
+    <h3>Dietary Preferences</h3>
     <div class="row g-3">
         <div class="col-6 col-md-4">
             <button class="diet-button" data-diet="vegetarian">
@@ -44,9 +45,52 @@
     </div>
 </div>
 
+<div class="diet-buttons-container mb-4">
+    <h3>Allergies</h3>
+    <div class="row g-3">
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="nuts">
+                <i class="fas fa-ban"></i>
+                Tree Nuts
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="peanuts">
+                <i class="fas fa-ban"></i>
+                Peanuts
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="dairy">
+                <i class="fas fa-ban"></i>
+                Dairy
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="eggs">
+                <i class="fas fa-ban"></i>
+                Eggs
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="shellfish">
+                <i class="fas fa-ban"></i>
+                Shellfish
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-allergy="soy">
+                <i class="fas fa-ban"></i>
+                Soy
+            </button>
+        </div>
+    </div>
+</div>
+
 <form method="post" action="{{ url_for('main.generate_meal_plan') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="diet_type" id="selected_diet" value="">
+    <input type="hidden" name="allergies" id="selected_allergies" value="">
     <div class="form-group">
         {{ form.preferences.label }}
         {{ form.preferences(class="form-control", rows=4, placeholder="Add any additional preferences or restrictions...") }}

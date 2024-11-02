@@ -24,20 +24,36 @@ DIET_PROMPTS = {
     Additional preferences: {preferences}"""
 }
 
-def get_meal_suggestion_prompt(preferences, diet_types=None):
-    """Generate a meal suggestion prompt based on diet types and preferences."""
-    combined_prompt = ""
+ALLERGY_PROMPTS = {
+    "nuts": "Strictly avoid all tree nuts including almonds, walnuts, pecans, cashews, etc.",
+    "peanuts": "Strictly avoid peanuts and peanut-derived ingredients.",
+    "dairy": "Exclude all dairy products including milk, cheese, yogurt, and butter.",
+    "eggs": "Exclude all eggs and egg-derived ingredients.",
+    "shellfish": "Avoid all shellfish including shrimp, crab, lobster, and mollusks.",
+    "soy": "Exclude all soy products and soy-derived ingredients."
+}
+
+def get_meal_suggestion_prompt(preferences, diet_types=None, allergies=None):
+    """Generate a meal suggestion prompt based on diet types, allergies, and preferences."""
+    combined_prompt = []
+    
     if diet_types:
         diet_list = diet_types.split(',')
         for diet in diet_list:
             if diet in DIET_PROMPTS:
-                combined_prompt += DIET_PROMPTS[diet].strip() + " AND "
+                combined_prompt.append(DIET_PROMPTS[diet].strip())
+    
+    if allergies:
+        allergy_list = allergies.split(',')
+        for allergy in allergy_list:
+            if allergy in ALLERGY_PROMPTS:
+                combined_prompt.append(ALLERGY_PROMPTS[allergy])
+    
+    if combined_prompt:
+        prompt = " AND ".join(combined_prompt)
+        return f"{prompt}. Additional preferences: {preferences}"
         
-        if combined_prompt:
-            combined_prompt = combined_prompt[:-5]  # Remove trailing " AND "
-            return f"{combined_prompt}. Additional preferences: {preferences}"
-            
-    return f"Based on the following dietary preferences, suggest a meal. Provide the response in JSON format including keys 'name', 'description', 'ingredients', and 'instructions'. Preferences: {preferences}"
+    return f"Based on the following dietary preferences, suggest a meal. {preferences}"
 
 def get_recipe_details_prompt(recipe_name):
     return f"Provide detailed recipe information for '{recipe_name}' in JSON format. Include 'ingredients' and 'instructions'."

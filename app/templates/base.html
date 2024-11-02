@@ -75,9 +75,12 @@
     <!-- Add this before the closing body tag -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const dietButtons = document.querySelectorAll('.diet-button');
+            const dietButtons = document.querySelectorAll('[data-diet]');
+            const allergyButtons = document.querySelectorAll('[data-allergy]');
             const selectedDietInput = document.getElementById('selected_diet');
+            const selectedAllergiesInput = document.getElementById('selected_allergies');
             const selectedDiets = new Set();
+            const selectedAllergies = new Set();
 
             dietButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -93,6 +96,23 @@
                     }
                     
                     selectedDietInput.value = Array.from(selectedDiets).join(',');
+                });
+            });
+
+            allergyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const allergyType = this.getAttribute('data-allergy');
+                    
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedAllergies.delete(allergyType);
+                    } else {
+                        this.classList.add('selected');
+                        selectedAllergies.add(allergyType);
+                    }
+                    
+                    selectedAllergiesInput.value = Array.from(selectedAllergies).join(',');
                 });
             });
 
