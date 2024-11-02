@@ -77,14 +77,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             const dietButtons = document.querySelectorAll('.diet-button');
             const selectedDietInput = document.getElementById('selected_diet');
+            const selectedDiets = new Set();
 
             dietButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    dietButtons.forEach(btn => btn.classList.remove('selected'));
-                    this.classList.add('selected');
                     const dietType = this.getAttribute('data-diet');
-                    selectedDietInput.value = dietType;
+                    
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedDiets.delete(dietType);
+                    } else {
+                        this.classList.add('selected');
+                        selectedDiets.add(dietType);
+                    }
+                    
+                    selectedDietInput.value = Array.from(selectedDiets).join(',');
                 });
             });
 

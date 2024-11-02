@@ -4,10 +4,10 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from app.models import User
 
 class PreferencesForm(FlaskForm):
-    preferences = TextAreaField('Dietary Preferences', 
+    preferences = TextAreaField('What are you in the mood for?', 
         validators=[
-            DataRequired(message="Please enter your dietary preferences"),
-            Length(min=3, max=500, message="Preferences must be between 3 and 500 characters")
+            DataRequired(message="Please tell us what you're craving"),
+            Length(min=3, max=500, message="Your food preferences must be between 3 and 500 characters")
         ])
     submit = SubmitField('Generate Meal Plan')
 

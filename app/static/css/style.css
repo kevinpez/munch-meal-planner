@@ -217,6 +217,9 @@ button:hover {
 .diet-button.selected {
     background-color: #D2691E;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border: 2px solid #8B4513;
 }
 
 .diet-button.selected i {

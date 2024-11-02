@@ -24,12 +24,12 @@ def home():
 def generate_meal_plan():
     try:
         preferences = request.form.get('preferences')
-        diet_type = request.form.get('diet_type')
+        diet_types = request.form.get('diet_type')  # Now contains comma-separated values
         
         if not preferences:
             raise BadRequest("Preferences are required")
         
-        meal_data = ai_service.generate_meal_suggestion(preferences, diet_type)
+        meal_data = ai_service.generate_meal_suggestion(preferences, diet_types)
         if not meal_data:
             flash('Could not generate meal suggestion. Please try again.', 'error')
             return redirect(url_for('main.home'))

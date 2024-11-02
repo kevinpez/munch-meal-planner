@@ -24,10 +24,19 @@ DIET_PROMPTS = {
     Additional preferences: {preferences}"""
 }
 
-def get_meal_suggestion_prompt(preferences, diet_type=None):
-    """Generate a meal suggestion prompt based on diet type and preferences."""
-    if diet_type and diet_type in DIET_PROMPTS:
-        return DIET_PROMPTS[diet_type].format(preferences=preferences)
+def get_meal_suggestion_prompt(preferences, diet_types=None):
+    """Generate a meal suggestion prompt based on diet types and preferences."""
+    combined_prompt = ""
+    if diet_types:
+        diet_list = diet_types.split(',')
+        for diet in diet_list:
+            if diet in DIET_PROMPTS:
+                combined_prompt += DIET_PROMPTS[diet].strip() + " AND "
+        
+        if combined_prompt:
+            combined_prompt = combined_prompt[:-5]  # Remove trailing " AND "
+            return f"{combined_prompt}. Additional preferences: {preferences}"
+            
     return f"Based on the following dietary preferences, suggest a meal. Provide the response in JSON format including keys 'name', 'description', 'ingredients', and 'instructions'. Preferences: {preferences}"
 
 def get_recipe_details_prompt(recipe_name):
