@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <form method="post" action="{{ url_for('save_recipe') }}" class="mt-4">
+                <form method="post" action="{{ url_for('main.save_recipe') }}" class="mt-4">
                     <input type="hidden" name="recipe_name" value="{{ meal.name }}">
                     <button type="submit" class="btn btn-primary">Save to Cookbook</button>
                 </form>

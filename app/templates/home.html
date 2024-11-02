@@ -3,7 +3,7 @@
 {% block content %}
 <h2>Welcome!</h2>
 <form method="post" action="{{ url_for('main.generate_meal_plan') }}">
-    {{ form.csrf_token }}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="form-group">
         {{ form.preferences.label }}
         {{ form.preferences(class="form-control", rows=4) }}
