@@ -20,3 +20,5 @@ Munch is a personalized meal planning application that uses OpenAI's GPT model t
 2. Install dependencies:
    ```bash
    pip install -r requirements.txt
+
+## Database Setup

@@ -3,8 +3,16 @@
 {% block content %}
 <h2>Welcome!</h2>
 <form method="post" action="{{ url_for('generate_meal_plan') }}">
-    <label for="preferences">Enter your dietary preferences:</label><br>
-    <textarea name="preferences" id="preferences" rows="4" cols="50" placeholder="e.g., vegetarian, gluten-free, high-protein"></textarea><br>
-    <button type="submit">Generate Meal Plan</button>
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.preferences.label }}
+        {{ form.preferences(class="form-control", rows=4) }}
+        {% if form.preferences.errors %}
+            {% for error in form.preferences.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {{ form.submit(class="btn btn-primary mt-3") }}
 </form>
 {% endblock %}

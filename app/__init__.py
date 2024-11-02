@@ -2,32 +2,52 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from openai import OpenAI
-from dotenv import load_dotenv
+from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
+from logging.config import dictConfig
 
-load_dotenv()
-
-if not os.getenv('OPENAI_API_KEY'):
-    raise ValueError("OPENAI_API_KEY must be set in environment variables")
-
-app = Flask(__name__, static_folder='static')
-
-# Configuration
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-dev-key')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///munch.db'
+# Configure logging
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 # Initialize extensions
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+migrate = Migrate()
+csrf = CSRFProtect()
 
-# Set OpenAI client
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+def create_app():
+    app = Flask(__name__)
+    
+    # Load config
+    app.config.from_object('app.config.Config')
 
-# Import models before creating tables
-from app import models
+    # Initialize extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
+    csrf.init_app(app)
 
-# Create database tables
-with app.app_context():
-    db.create_all()
+    with app.app_context():
+        # Import routes here to avoid circular imports
+        from app.routes import bp
+        app.register_blueprint(bp)
+        
+        # Create tables
+        db.create_all()
 
-# Import routes after everything is initialized
-from app import routes
+    return app
+
+# Create the app instance
+app = create_app()
