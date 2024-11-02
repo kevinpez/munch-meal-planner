@@ -66,8 +66,13 @@ def create_app(config_class=Config):
         app.register_blueprint(bp)
         app.register_blueprint(errors)
         
-        # Create tables
-        db.create_all()
+        try:
+            # Create tables
+            db.create_all()
+            app.logger.info('Database tables created successfully')
+        except Exception as e:
+            app.logger.error(f'Error creating database tables: {str(e)}')
+            raise
 
     return app
 
