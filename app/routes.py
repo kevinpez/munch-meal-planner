@@ -51,10 +51,11 @@ def generate_meal_plan():
 def save_recipe():
     try:
         recipe_name = request.form.get('recipe_name')
+        image_url = request.form.get('image_url')
+        
         if not recipe_name:
             raise BadRequest('Recipe name is required')
 
-        # Check if recipe already exists for this user
         existing_recipe = Recipe.query.filter_by(
             name=recipe_name, 
             user_id=current_user.id
@@ -69,7 +70,6 @@ def save_recipe():
             flash('Could not fetch recipe details', 'error')
             return redirect(url_for('main.home'))
 
-        # Convert lists to strings if necessary
         ingredients = recipe_details.get('ingredients', [])
         if isinstance(ingredients, list):
             ingredients = '\n'.join(ingredients)
@@ -82,6 +82,7 @@ def save_recipe():
             name=recipe_name,
             ingredients=ingredients,
             instructions=instructions,
+            image_url=image_url,
             user_id=current_user.id
         )
         

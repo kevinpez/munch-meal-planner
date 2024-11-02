@@ -6,6 +6,9 @@
     {% for recipe in recipes %}
     <div class="col-md-6 mb-4">
         <div class="card">
+            {% if recipe.image_url %}
+            <img src="{{ recipe.image_url }}" class="card-img-top recipe-image" alt="{{ recipe.name }}">
+            {% endif %}
             <div class="card-body">
                 <h3 class="card-title">{{ recipe.name }}</h3>
                 {% if recipe.ingredients %}

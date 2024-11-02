@@ -11,6 +11,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text, nullable=True)
     instructions = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    image_url = db.Column(db.String(500), nullable=True)
 
     @validates('name')
     def validate_name(self, key, name):
