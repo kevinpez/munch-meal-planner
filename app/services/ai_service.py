@@ -2,7 +2,7 @@ from openai import OpenAI
 from typing import Optional, Dict, Any
 import json
 from flask import current_app
-from app.prompts import get_meal_suggestion_prompt
+from app.prompts import get_meal_suggestion_prompt, get_recipe_details_prompt
 
 class AIService:
     def __init__(self):
@@ -82,20 +82,13 @@ class AIService:
         try:
             client = self._ensure_client()
             sanitized_name = self.validate_and_clean_input(recipe_name)
-            
-            system_message = """You are a recipe details assistant. Respond with valid JSON containing:
-            {
-                "ingredients": ["ingredient 1", "ingredient 2", ...],
-                "instructions": ["step 1", "step 2", ...]
-            }"""
-            
-            user_message = f"Provide detailed recipe information for '{sanitized_name}'"
+            prompt = get_recipe_details_prompt(sanitized_name)
             
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": user_message}
+                    {"role": "system", "content": prompt["system"]},
+                    {"role": "user", "content": prompt["user"]}
                 ],
                 max_tokens=800,
                 temperature=0.7,
@@ -104,11 +97,11 @@ class AIService:
             
             result = json.loads(response.choices[0].message.content)
             
-            # Ensure we have lists for both ingredients and instructions
-            if isinstance(result.get('ingredients'), str):
-                result['ingredients'] = [result['ingredients']]
-            if isinstance(result.get('instructions'), str):
-                result['instructions'] = [result['instructions']]
+            # Convert ingredients to string format for storage
+            if 'ingredients' in result:
+                result['ingredients_list'] = [item['item'] for item in result['ingredients']]
+                result['base_ingredients'] = [item['base_item'] for item in result['ingredients']]
+                result['ingredients'] = '\n'.join(result['ingredients_list'])
                 
             return result
             

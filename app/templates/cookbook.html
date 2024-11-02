@@ -15,7 +15,7 @@
                     <img src="{{ url_for('static', filename=recipe.image_url) }}" 
                          class="card-img-top recipe-image" 
                          alt="{{ recipe.name }}"
-                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/default-recipe.jpg') }}';">
+                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/default-recipe.jpg') }}'">
                 {% else %}
                     <img src="{{ url_for('static', filename='images/default-recipe.jpg') }}" 
                          class="card-img-top recipe-image" 

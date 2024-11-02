@@ -56,4 +56,15 @@ def get_meal_suggestion_prompt(preferences, diet_types=None, allergies=None):
     return f"Based on the following dietary preferences, suggest a meal. {preferences}"
 
 def get_recipe_details_prompt(recipe_name):
-    return f"Provide detailed recipe information for '{recipe_name}' in JSON format. Include 'ingredients' and 'instructions'."
+    return {
+        "system": """You are a recipe details assistant. Provide recipe information in the following JSON format:
+        {
+            "ingredients": [
+                {"item": "2 cups flour", "base_item": "flour"},
+                {"item": "1 cup milk", "base_item": "milk"}
+            ],
+            "instructions": ["step 1", "step 2"]
+        }
+        Always break down ingredients into their base items for shopping list purposes.""",
+        "user": f"Provide detailed recipe information for '{recipe_name}'"
+    }

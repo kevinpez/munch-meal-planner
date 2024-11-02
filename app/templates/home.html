@@ -93,7 +93,7 @@
     <input type="hidden" name="allergies" id="selected_allergies" value="">
     <div class="form-group">
         {{ form.preferences.label }}
-        {{ form.preferences(class="form-control", rows=4, placeholder="Add any additional preferences or restrictions...") }}
+        {{ form.preferences(class="form-control", rows=4, placeholder="Enter your preferences or just click Generate for a surprise meal suggestion!") }}
         {% if form.preferences.errors %}
             {% for error in form.preferences.errors %}
                 <span class="text-danger">{{ error }}</span>

@@ -5,6 +5,7 @@ from app.extensions import db, login
 from sqlalchemy.orm import validates
 from typing import Optional
 from datetime import datetime
+from flask import current_app
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -57,6 +58,17 @@ class Recipe(db.Model):
 
     def __repr__(self):
         return f'<Recipe {self.name}>'
+
+    def get_base_ingredients(self):
+        """Get list of base ingredients for shopping list."""
+        try:
+            from app.services.ai_service import AIService
+            ai_service = AIService()
+            recipe_details = ai_service.get_recipe_details(self.name)
+            return recipe_details.get('base_ingredients', []) if recipe_details else []
+        except Exception as e:
+            current_app.logger.error(f"Error getting base ingredients: {str(e)}")
+            return []
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)

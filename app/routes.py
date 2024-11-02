@@ -10,6 +10,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 import traceback
 from flask_wtf import FlaskForm
 from app.utils.image_handler import ImageHandler
+import os
 
 bp = Blueprint('main', __name__)
 ai_service = AIService()
@@ -18,7 +19,7 @@ ai_service = AIService()
 def home():
     form = PreferencesForm()
     if form.validate_on_submit():
-        preferences = form.preferences.data
+        preferences = form.preferences.data or "Suggest a balanced, healthy meal that's easy to prepare."
         return redirect(url_for('main.generate_meal_plan', preferences=preferences))
     return render_template('home.html', form=form)
 
@@ -85,20 +86,20 @@ def save_recipe():
                 user_id=current_user.id
             )
             
-            current_app.logger.debug(f"Created recipe object with image_url: {recipe.image_url}")
-            
             db.session.add(recipe)
             db.session.commit()
             
+            # Automatically sync grocery list after saving recipe
+            recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+            compile_ingredients(recipes)
+            
             flash('Recipe saved successfully!', 'success')
             return redirect(url_for('main.cookbook'))
+            
         except Exception as e:
             current_app.logger.error(f"Error saving recipe: {str(e)}")
-            current_app.logger.error(traceback.format_exc())  # Add full traceback
-            db.session.rollback()
-            flash('Error saving recipe', 'error')
+            flash(str(e), 'error')
             return redirect(url_for('main.cookbook'))
-    flash('Invalid form submission.', 'error')
     return redirect(url_for('main.cookbook'))
 
 @bp.route('/cookbook')
@@ -132,17 +133,32 @@ def internal_error(error):
     db.session.rollback()  # Reset failed DB sessions
     return render_template('error.html', error=error), 500
 
-@bp.route('/delete-recipe/<int:recipe_id>', methods=['POST'])
+@bp.route('/delete_recipe/<int:recipe_id>', methods=['POST'])
+@login_required
 def delete_recipe(recipe_id):
     try:
         recipe = Recipe.query.get_or_404(recipe_id)
+        if recipe.user_id != current_user.id:
+            flash('You cannot delete this recipe.', 'error')
+            return redirect(url_for('main.cookbook'))
+        
+        # Delete the recipe
         db.session.delete(recipe)
         db.session.commit()
-        flash('Recipe deleted successfully!', 'success')
+        
+        # Sync grocery list with remaining recipes
+        remaining_recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+        if compile_ingredients(remaining_recipes):
+            flash('Recipe deleted and grocery list updated.', 'success')
+        else:
+            flash('Recipe deleted but error updating grocery list.', 'warning')
+            
         return redirect(url_for('main.cookbook'))
+        
     except Exception as e:
+        db.session.rollback()
         current_app.logger.error(f"Error deleting recipe: {str(e)}")
-        flash('Error deleting recipe', 'error')
+        flash('Error deleting recipe.', 'error')
         return redirect(url_for('main.cookbook'))
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -229,22 +245,49 @@ def add_grocery_item():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 def compile_ingredients(recipes):
-    ingredients = []
-    for recipe in recipes:
-        if recipe.ingredients:
-            ingredients.extend([item.strip() for item in recipe.ingredients.split('\n') if item.strip()])
-    
-    # Create grocery items for the current user if they don't exist
-    if current_user.is_authenticated:
-        existing_items = {item.name: item for item in GroceryItem.query.filter_by(user_id=current_user.id).all()}
+    """Compile ingredients from recipes and sync with grocery list."""
+    try:
+        # Get all base ingredients from recipes
+        base_ingredients = set()
+        for recipe in recipes:
+            if recipe.ingredients:
+                # Get base ingredients from AI service
+                recipe_details = ai_service.get_recipe_details(recipe.name)
+                if recipe_details and 'base_ingredients' in recipe_details:
+                    base_ingredients.update(recipe_details['base_ingredients'])
         
-        for ingredient in set(ingredients):
-            if ingredient not in existing_items:
-                new_item = GroceryItem(name=ingredient, user_id=current_user.id)
-                db.session.add(new_item)
-        
-        db.session.commit()
-        
-        return GroceryItem.query.filter_by(user_id=current_user.id).all()
-    
-    return list(set(ingredients))
+        if current_user.is_authenticated:
+            # Get current user's grocery items
+            current_items = GroceryItem.query.filter_by(user_id=current_user.id).all()
+            current_item_names = {item.name.lower() for item in current_items}
+            
+            # Remove items that are no longer in any recipe
+            for item in current_items:
+                if item.name.lower() not in {ing.lower() for ing in base_ingredients}:
+                    db.session.delete(item)
+            
+            # Add new items from recipes
+            for ingredient in base_ingredients:
+                if ingredient.lower() not in current_item_names:
+                    new_item = GroceryItem(
+                        name=ingredient,
+                        user_id=current_user.id,
+                        is_checked=False
+                    )
+                    db.session.add(new_item)
+            
+            db.session.commit()
+            return True
+            
+    except Exception as e:
+        current_app.logger.error(f"Error compiling ingredients: {str(e)}")
+        db.session.rollback()
+        return False
+
+@bp.route('/sync-grocery-list', methods=['POST'])
+@login_required
+def sync_grocery_list():
+    recipes = Recipe.query.filter_by(user_id=current_user.id).all()
+    compile_ingredients(recipes)
+    flash('Grocery list updated successfully!', 'success')
+    return redirect(url_for('main.grocery_list'))

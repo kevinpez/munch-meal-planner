@@ -6,8 +6,7 @@ from app.models import User
 class PreferencesForm(FlaskForm):
     preferences = TextAreaField('What are you in the mood for?', 
         validators=[
-            DataRequired(message="Please tell us what you're craving"),
-            Length(min=3, max=500, message="Your food preferences must be between 3 and 500 characters")
+            Length(max=500, message="Your food preferences must be less than 500 characters")
         ])
     submit = SubmitField('Generate Meal Plan')
 
