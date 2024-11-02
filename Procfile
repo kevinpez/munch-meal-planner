@@ -1,1 +1,1 @@
-web: gunicorn run:app 
+web: mkdir -p app/static/images/recipes && gunicorn run:app 

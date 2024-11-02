@@ -11,4 +11,7 @@ instance/
 .webassets-cache
 .env
 *.db
-flask_session/ 
+flask_session/
+# Ignore all files in images/recipes except .gitkeep
+app/static/images/recipes/*
+!app/static/images/recipes/.gitkeep 
