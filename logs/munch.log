@@ -92,3 +92,6 @@ Exception: Install 'email_validator' for email validation support.
 2024-11-01 23:13:58,987 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
 2024-11-01 23:13:59,864 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
 2024-11-01 23:14:00,709 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 23:14:55,118 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 23:15:12,102 INFO: Starting registration process for username: Kevin Pesenecker3 [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:163]
+2024-11-01 23:15:12,196 INFO: Successfully registered user: Kevin Pesenecker3 [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:172]
