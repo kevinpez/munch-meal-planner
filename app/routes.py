@@ -2,13 +2,21 @@
 from flask import render_template, request, redirect, url_for, flash
 from app import app, db
 from app.models import Recipe
-import openai
+from openai import OpenAI
 from app.prompts import get_meal_suggestion_prompt, get_recipe_details_prompt
 import json
+from app.forms import PreferencesForm
+
+# Initialize the OpenAI client
+client = OpenAI()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    form = PreferencesForm()
+    if form.validate_on_submit():
+        preferences = form.preferences.data
+        return redirect(url_for('generate_meal_plan', preferences=preferences))
+    return render_template('home.html', form=form)
 
 @app.route('/generate-meal-plan', methods=['POST'])
 def generate_meal_plan():
@@ -21,12 +29,14 @@ def generate_meal_plan():
 
 def get_single_meal(preferences):
     try:
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=get_meal_suggestion_prompt(preferences),
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that suggests meals based on user preferences."},
+                {"role": "user", "content": get_meal_suggestion_prompt(preferences)}
+            ],
             max_tokens=500,
             temperature=0.7,
-            response_format={ "type": "json_object" }
         )
         return json.loads(response.choices[0].message.content)
     except Exception as e:
@@ -35,7 +45,7 @@ def get_single_meal(preferences):
 
 def generate_image(meal_description):
     try:
-        response = openai.images.generate(
+        response = client.images.generate(
             prompt=f"{meal_description}",
             n=1,
             size="256x256"
@@ -82,17 +92,19 @@ def save_recipe():
 
 def get_recipe_details(recipe_name):
     try:
-        response = openai.chat.completions.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=get_recipe_details_prompt(recipe_name),
+            messages=[
+                {"role": "system", "content": "You provide detailed recipes for given meal names."},
+                {"role": "user", "content": get_recipe_details_prompt(recipe_name)}
+            ],
             max_tokens=700,
             temperature=0.7,
-            response_format={ "type": "json_object" }
         )
         recipe_data = json.loads(response.choices[0].message.content)
         return {
-            'ingredients': '\n'.join(recipe_data['ingredients']),
-            'instructions': '\n'.join(recipe_data['instructions'])
+            'ingredients': '\n'.join(recipe_data.get('ingredients', [])),
+            'instructions': '\n'.join(recipe_data.get('instructions', []))
         }
     except Exception as e:
         print(f"Error fetching recipe details: {e}")
