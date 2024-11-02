@@ -2,21 +2,31 @@ import os
 from datetime import timedelta
 
 class Config:
+    # Required configs with fallbacks for development
     SECRET_KEY = os.getenv('SECRET_KEY')
     if not SECRET_KEY:
-        raise ValueError("No SECRET_KEY set in environment variables")
+        if os.getenv('FLASK_ENV') == 'development':
+            SECRET_KEY = 'dev-key-for-development-only'
+        else:
+            raise ValueError("No SECRET_KEY set in environment variables")
     
+    # Database config with proper URL handling
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
     elif not SQLALCHEMY_DATABASE_URI:
-        SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'  # fallback for local development
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+        if os.getenv('FLASK_ENV') == 'development':
+            SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
+        else:
+            raise ValueError("No DATABASE_URL set in environment variables")
     
-    # OpenAI Config
+    # OpenAI config with development handling
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     if not OPENAI_API_KEY:
-        raise ValueError("No OPENAI_API_KEY set in environment variables")
+        if os.getenv('FLASK_ENV') == 'development':
+            print("Warning: No OPENAI_API_KEY set. AI features will be disabled.")
+        else:
+            raise ValueError("No OPENAI_API_KEY set in environment variables")
     
     # Security Config
     SESSION_COOKIE_SECURE = True
