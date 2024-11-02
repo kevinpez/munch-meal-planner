@@ -45,10 +45,16 @@ def create_app(config_class=Config):
     csrf.init_app(app)
     session.init_app(app)
 
+    # Add security headers
+    from app.security import add_security_headers
+    app.after_request(add_security_headers)
+
     with app.app_context():
         # Import routes here to avoid circular imports
         from app.routes import bp
+        from app.errors import errors
         app.register_blueprint(bp)
+        app.register_blueprint(errors)
         
         # Create tables
         db.create_all()
