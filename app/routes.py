@@ -22,10 +22,15 @@ def home():
 def generate_meal_plan():
     try:
         preferences = request.form.get('preferences')
+        diet_type = request.form.get('diet_type')
+        
         if not preferences:
             raise BadRequest("Preferences are required")
 
-        meal_data = ai_service.generate_meal_suggestion(preferences)
+        # Combine diet type with preferences if it exists
+        full_preferences = f"Diet type: {diet_type}. " + preferences if diet_type else preferences
+        
+        meal_data = ai_service.generate_meal_suggestion(full_preferences)
         if not meal_data:
             flash('Could not generate meal suggestion. Please try again.', 'error')
             return redirect(url_for('main.home'))

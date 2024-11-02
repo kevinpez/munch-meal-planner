@@ -2,11 +2,54 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>Welcome!</h2>
+
+<div class="diet-buttons-container mb-4">
+    <div class="row g-3">
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="vegetarian">
+                <i class="fas fa-leaf"></i>
+                Vegetarian
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="vegan">
+                <i class="fas fa-seedling"></i>
+                Vegan
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="keto">
+                <i class="fas fa-drumstick-bite"></i>
+                Keto
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="paleo">
+                <i class="fas fa-fish"></i>
+                Paleo
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="gluten-free">
+                <i class="fas fa-bread-slice"></i>
+                Gluten-Free
+            </button>
+        </div>
+        <div class="col-6 col-md-4">
+            <button class="diet-button" data-diet="balanced">
+                <i class="fas fa-balance-scale"></i>
+                Balanced
+            </button>
+        </div>
+    </div>
+</div>
+
 <form method="post" action="{{ url_for('main.generate_meal_plan') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="diet_type" id="selected_diet" value="">
     <div class="form-group">
         {{ form.preferences.label }}
-        {{ form.preferences(class="form-control", rows=4) }}
+        {{ form.preferences(class="form-control", rows=4, placeholder="Add any additional preferences or restrictions...") }}
         {% if form.preferences.errors %}
             {% for error in form.preferences.errors %}
                 <span class="text-danger">{{ error }}</span>
@@ -15,4 +58,8 @@
     </div>
     {{ form.submit(class="btn btn-primary mt-3") }}
 </form>
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 {% endblock %}
