@@ -75,12 +75,12 @@ def save_recipe():
         return redirect(url_for('main.home'))
     except SQLAlchemyError as e:
         db.session.rollback()
-        current_app.logger.error(f"Database error: {str(e)}")
+        current_app.logger.error(f"Database error in save_recipe: {str(e)}")
         flash('Error saving recipe', 'error')
         return redirect(url_for('main.home'))
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(f"Unexpected error: {str(e)}")
+        current_app.logger.error(f"Unexpected error in save_recipe: {str(e)}")
         flash('An unexpected error occurred', 'error')
         return redirect(url_for('main.home'))
 
