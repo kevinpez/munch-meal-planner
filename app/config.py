@@ -22,3 +22,16 @@ class Config:
     
     # API Config
     MAX_CONTENT_LENGTH = 1 * 1024 * 1024  # 1MB max request size 
+    
+    # Session Config
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    WTF_CSRF_TIME_LIMIT = 3600  # 1 hour
+    WTF_CSRF_SSL_STRICT = True
+    
+    # Add these lines after the existing configurations
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_DIR = os.path.join(os.getcwd(), 'flask_session')
+    SESSION_FILE_THRESHOLD = 500  # Number of sessions stored in filesystem
+    SESSION_PERMANENT = True
+    PERMANENT_SESSION_LIFETIME = timedelta(days=1)

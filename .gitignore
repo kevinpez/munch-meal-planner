@@ -10,4 +10,5 @@ ENV/
 instance/
 .webassets-cache
 .env
-*.db 
+*.db
+flask_session/ 

@@ -6,3 +6,4 @@ flask-migrate
 flask-login
 psycopg2-binary
 gunicorn
+flask-session

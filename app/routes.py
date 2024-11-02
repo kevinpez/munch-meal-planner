@@ -59,10 +59,19 @@ def save_recipe():
             flash('Could not fetch recipe details', 'error')
             return redirect(url_for('main.home'))
 
+        # Convert lists to strings if necessary
+        ingredients = recipe_details.get('ingredients', [])
+        if isinstance(ingredients, list):
+            ingredients = '\n'.join(ingredients)
+
+        instructions = recipe_details.get('instructions', [])
+        if isinstance(instructions, list):
+            instructions = '\n'.join(instructions)
+
         new_recipe = Recipe(
             name=recipe_name,
-            ingredients=recipe_details.get('ingredients'),
-            instructions=recipe_details.get('instructions')
+            ingredients=ingredients,
+            instructions=instructions
         )
         
         db.session.add(new_recipe)

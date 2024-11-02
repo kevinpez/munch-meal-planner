@@ -11,17 +11,20 @@ class Recipe(db.Model):
 
     @validates('name')
     def validate_name(self, key, name):
-        if not name or len(name.strip()) == 0:
+        if not name or len(str(name).strip()) == 0:
             raise ValueError("Recipe name cannot be empty")
-        if len(name) > 100:
+        if len(str(name)) > 100:
             raise ValueError("Recipe name must be less than 100 characters")
-        return name.strip()
+        return str(name).strip()
 
     @validates('ingredients', 'instructions')
     def validate_text_fields(self, key, value):
-        if value is not None:
-            return value.strip()
-        return value
+        if value is None:
+            return value
+        # Handle both string and list inputs
+        if isinstance(value, list):
+            return '\n'.join(str(item).strip() for item in value)
+        return str(value).strip()
 
     def to_dict(self):
         return {
