@@ -1,0 +1,125 @@
+2024-11-01 21:56:00,651 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:20]
+2024-11-01 21:56:01,296 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:20]
+2024-11-01 21:56:02,267 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:20]
+2024-11-01 21:56:17,400 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 21:58:22,539 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 21:58:23,159 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 21:58:23,791 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 21:58:33,577 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:01:57,175 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:01:57,833 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:01:58,491 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:02:12,611 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:09:32,344 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:09:33,000 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:09:33,692 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:44:59,480 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:46:21,669 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:50:04,488 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:52:37,873 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-01 22:53:15,195 ERROR: Error during registration: Install 'email_validator' for email validation support. [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:185]
+2024-11-01 22:53:15,195 ERROR: Error type: Exception [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:186]
+2024-11-01 22:53:15,197 ERROR: Traceback: Traceback (most recent call last):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 401, in __call__
+    import email_validator
+ModuleNotFoundError: No module named 'email_validator'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kevin-pesenecker/Documents/code/munch/app/routes.py", line 162, in register
+    if form.validate_on_submit():
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/flask_wtf/form.py", line 86, in validate_on_submit
+    return self.is_submitted() and self.validate(extra_validators=extra_validators)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 330, in validate
+    return super().validate(extra)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 147, in validate
+    if not field.validate(self, extra):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 234, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 254, in _run_validation_chain
+    validator(form, self)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 403, in __call__
+    raise Exception(
+Exception: Install 'email_validator' for email validation support.
+ [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:187]
+2024-11-01 22:53:27,929 ERROR: Error during registration: Install 'email_validator' for email validation support. [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:185]
+2024-11-01 22:53:27,929 ERROR: Error type: Exception [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:186]
+2024-11-01 22:53:27,930 ERROR: Traceback: Traceback (most recent call last):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 401, in __call__
+    import email_validator
+ModuleNotFoundError: No module named 'email_validator'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kevin-pesenecker/Documents/code/munch/app/routes.py", line 162, in register
+    if form.validate_on_submit():
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/flask_wtf/form.py", line 86, in validate_on_submit
+    return self.is_submitted() and self.validate(extra_validators=extra_validators)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 330, in validate
+    return super().validate(extra)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 147, in validate
+    if not field.validate(self, extra):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 234, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 254, in _run_validation_chain
+    validator(form, self)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 403, in __call__
+    raise Exception(
+Exception: Install 'email_validator' for email validation support.
+ [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:187]
+2024-11-01 22:53:36,897 ERROR: Error during registration: Install 'email_validator' for email validation support. [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:185]
+2024-11-01 22:53:36,897 ERROR: Error type: Exception [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:186]
+2024-11-01 22:53:36,898 ERROR: Traceback: Traceback (most recent call last):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 401, in __call__
+    import email_validator
+ModuleNotFoundError: No module named 'email_validator'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kevin-pesenecker/Documents/code/munch/app/routes.py", line 162, in register
+    if form.validate_on_submit():
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/flask_wtf/form.py", line 86, in validate_on_submit
+    return self.is_submitted() and self.validate(extra_validators=extra_validators)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 330, in validate
+    return super().validate(extra)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 147, in validate
+    if not field.validate(self, extra):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 234, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 254, in _run_validation_chain
+    validator(form, self)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 403, in __call__
+    raise Exception(
+Exception: Install 'email_validator' for email validation support.
+ [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:187]
+2024-11-01 22:53:44,437 ERROR: Error during registration: Install 'email_validator' for email validation support. [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:185]
+2024-11-01 22:53:44,437 ERROR: Error type: Exception [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:186]
+2024-11-01 22:53:44,437 ERROR: Traceback: Traceback (most recent call last):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 401, in __call__
+    import email_validator
+ModuleNotFoundError: No module named 'email_validator'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/kevin-pesenecker/Documents/code/munch/app/routes.py", line 162, in register
+    if form.validate_on_submit():
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/flask_wtf/form.py", line 86, in validate_on_submit
+    return self.is_submitted() and self.validate(extra_validators=extra_validators)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 330, in validate
+    return super().validate(extra)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/form.py", line 147, in validate
+    if not field.validate(self, extra):
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 234, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/fields/core.py", line 254, in _run_validation_chain
+    validator(form, self)
+  File "/home/kevin-pesenecker/micromamba/lib/python3.9/site-packages/wtforms/validators.py", line 403, in __call__
+    raise Exception(
+Exception: Install 'email_validator' for email validation support.
+ [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:187]
+2024-11-01 22:53:52,831 ERROR: Error during registration: Install 'email_validator' for email validation support. [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:185]
+2024-11-01 22:53:52,831 ERROR: Error type: Exception [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:186]

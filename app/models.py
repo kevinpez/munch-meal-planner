@@ -47,7 +47,25 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     recipes = db.relationship('Recipe', backref='author', lazy='dynamic')
 
+    @validates('username')
+    def validate_username(self, key, username):
+        if not username:
+            raise ValueError("Username cannot be empty")
+        if len(username) > 64:
+            raise ValueError("Username must be less than 64 characters")
+        return username.strip()
+
+    @validates('email')
+    def validate_email(self, key, email):
+        if not email:
+            raise ValueError("Email cannot be empty")
+        if len(email) > 120:
+            raise ValueError("Email must be less than 120 characters")
+        return email.strip().lower()
+
     def set_password(self, password):
+        if not password:
+            raise ValueError("Password cannot be empty")
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):

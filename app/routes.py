@@ -158,34 +158,34 @@ def register():
         return redirect(url_for('main.home'))
     
     form = RegistrationForm()
-    if form.validate_on_submit():
-        try:
-            current_app.logger.info(f'Attempting to register user: {form.username.data}')
+    try:
+        if form.validate_on_submit():
+            current_app.logger.info(f'Starting registration process for username: {form.username.data}')
             
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
-            
-            current_app.logger.info('User object created, attempting database save')
+            current_app.logger.debug('User object created successfully')
             
             db.session.add(user)
             db.session.commit()
             
             current_app.logger.info(f'Successfully registered user: {user.username}')
-            flash('Congratulations, you are now registered!', 'success')
+            flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('main.login'))
             
-        except Exception as e:
-            db.session.rollback()
-            current_app.logger.error(f'Registration error: {str(e)}')
-            current_app.logger.error(f'Error type: {type(e).__name__}')
-            current_app.logger.error(f'Traceback: {traceback.format_exc()}')
-            
-            # Return the error page with the actual error
-            return render_template('error.html', 
-                                 error=f"Registration failed: {str(e)}", 
-                                 traceback=traceback.format_exc()), 500
-    
-    if form.errors:
-        current_app.logger.error(f'Form validation errors: {form.errors}')
+    except SQLAlchemyError as e:
+        db.session.rollback()
+        current_app.logger.error(f'Database error: {str(e)}')
+        current_app.logger.error(f'Traceback: {traceback.format_exc()}')
+        flash(f'Database error: {str(e)}', 'error')
+        return render_template('auth/register.html', title='Register', form=form)
+        
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f'Error during registration: {str(e)}')
+        current_app.logger.error(f'Error type: {type(e).__name__}')
+        current_app.logger.error(f'Traceback: {traceback.format_exc()}')
+        flash(str(e), 'error')
+        return render_template('auth/register.html', title='Register', form=form)
     
     return render_template('auth/register.html', title='Register', form=form)

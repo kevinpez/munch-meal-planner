@@ -1,7 +1,13 @@
 import os
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+)
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY') or 'dev-key-for-development-only'
