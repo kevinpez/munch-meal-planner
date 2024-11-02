@@ -6,9 +6,11 @@ class Config:
     if not SECRET_KEY:
         raise ValueError("No SECRET_KEY set in environment variables")
     
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL', 'sqlite:///app.db')
-    if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+    if SQLALCHEMY_DATABASE_URI and SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
         SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI.replace("postgres://", "postgresql://", 1)
+    elif not SQLALCHEMY_DATABASE_URI:
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'  # fallback for local development
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # OpenAI Config
