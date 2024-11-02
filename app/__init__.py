@@ -7,6 +7,7 @@ from flask_wtf.csrf import CSRFProtect
 from logging.config import dictConfig
 from app.config import Config
 from flask_session import Session
+from flask_login import LoginManager
 
 # Configure logging
 dictConfig({
@@ -30,6 +31,9 @@ db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
 session = Session()
+login = LoginManager()
+login.login_view = 'main.login'
+login.login_message_category = 'info'
 
 # Add after the extensions initialization
 if not os.path.exists('flask_session'):
@@ -44,6 +48,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     csrf.init_app(app)
     session.init_app(app)
+    login.init_app(app)
 
     # Add security headers
     from app.security import add_security_headers
@@ -60,6 +65,10 @@ def create_app(config_class=Config):
         db.create_all()
 
     return app
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 # Create the app instance
 app = create_app()

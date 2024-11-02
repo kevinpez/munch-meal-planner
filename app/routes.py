@@ -1,11 +1,12 @@
 # app/routes.py
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from app import db
-from app.models import Recipe
+from app.models import Recipe, User
 from app.services.ai_service import AIService
-from app.forms import PreferencesForm
+from app.forms import PreferencesForm, LoginForm, RegistrationForm
 from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import SQLAlchemyError
+from flask_login import login_user, logout_user, login_required, current_user
 
 bp = Blueprint('main', __name__)
 ai_service = AIService()
@@ -96,8 +97,9 @@ def save_recipe():
         return redirect(url_for('main.home'))
 
 @bp.route('/cookbook')
+@login_required
 def cookbook():
-    recipes = Recipe.query.all()
+    recipes = Recipe.query.filter_by(user_id=current_user.id).all()
     return render_template('cookbook.html', recipes=recipes)
 
 @bp.route('/grocery-list')
@@ -131,3 +133,36 @@ def delete_recipe(recipe_id):
         current_app.logger.error(f"Error deleting recipe: {str(e)}")
         flash('Error deleting recipe', 'error')
         return redirect(url_for('main.cookbook'))
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password', 'error')
+            return redirect(url_for('main.login'))
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('main.home'))
+    return render_template('auth/login.html', title='Sign In', form=form)
+
+@bp.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('main.home'))
+
+@bp.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!', 'success')
+        return redirect(url_for('main.login'))
+    return render_template('auth/register.html', title='Register', form=form)
