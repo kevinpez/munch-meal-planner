@@ -8,6 +8,11 @@ from logging.config import dictConfig
 from app.config import Config
 from flask_session import Session
 from flask_login import LoginManager
+
+# Create db instance before importing models
+db = SQLAlchemy()
+
+# Import User model after db initialization
 from app.models import User
 
 # Configure logging
@@ -28,7 +33,6 @@ dictConfig({
 })
 
 # Initialize extensions
-db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
 session = Session()
