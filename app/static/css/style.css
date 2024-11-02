@@ -281,3 +281,61 @@ button:hover {
     margin-top: 20px;
     font-size: 1.2rem;
 }
+
+/* Hamburger Menu Styles */
+.navbar-toggler {
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.hamburger-icon {
+    position: relative;
+    width: 24px;
+    height: 2px;
+    background: white;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+.hamburger-icon:before,
+.hamburger-icon:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.hamburger-icon:before {
+    top: -6px;
+}
+
+.hamburger-icon:after {
+    bottom: -6px;
+}
+
+/* Animation for open state */
+.navbar-toggler[aria-expanded="true"] .hamburger-icon {
+    background: transparent;
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-icon:before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.navbar-toggler[aria-expanded="true"] .hamburger-icon:after {
+    bottom: 0;
+    transform: rotate(-45deg);
+}

@@ -98,3 +98,4 @@ Exception: Install 'email_validator' for email validation support.
 2024-11-02 08:46:09,344 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
 2024-11-02 08:57:26,062 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
 2024-11-02 09:02:20,291 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-02 09:09:08,055 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
