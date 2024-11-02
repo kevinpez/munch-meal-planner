@@ -8,6 +8,7 @@ from logging.config import dictConfig
 from app.config import Config
 from flask_session import Session
 from flask_login import LoginManager
+from app.models import User
 
 # Configure logging
 dictConfig({
