@@ -118,3 +118,16 @@ def compile_ingredients(recipes):
 def internal_error(error):
     db.session.rollback()  # Reset failed DB sessions
     return render_template('error.html', error=error), 500
+
+@bp.route('/delete-recipe/<int:recipe_id>', methods=['POST'])
+def delete_recipe(recipe_id):
+    try:
+        recipe = Recipe.query.get_or_404(recipe_id)
+        db.session.delete(recipe)
+        db.session.commit()
+        flash('Recipe deleted successfully!', 'success')
+        return redirect(url_for('main.cookbook'))
+    except Exception as e:
+        current_app.logger.error(f"Error deleting recipe: {str(e)}")
+        flash('Error deleting recipe', 'error')
+        return redirect(url_for('main.cookbook'))
