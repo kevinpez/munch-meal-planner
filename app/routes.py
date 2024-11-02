@@ -166,12 +166,12 @@ def register():
             db.session.add(user)
             db.session.commit()
             current_app.logger.info(f'Successfully registered user: {user.username}')
-            flash('Congratulations, you are now a registered user!', 'success')
+            flash('Congratulations, you are now registered!', 'success')
             return redirect(url_for('main.login'))
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f'Error registering user: {str(e)}')
             flash('Registration failed. Please try again.', 'error')
-            return render_template('auth/register.html', title='Register', form=form)
+            return redirect(url_for('main.register'))
             
     return render_template('auth/register.html', title='Register', form=form)
