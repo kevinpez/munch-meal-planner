@@ -60,7 +60,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const dietButtons = document.querySelectorAll('.diet-button');
             const selectedDietInput = document.getElementById('selected_diet');
-            const preferencesTextarea = document.querySelector('textarea[name="preferences"]');
 
             dietButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -72,13 +71,6 @@
                     // Update hidden input
                     const dietType = this.getAttribute('data-diet');
                     selectedDietInput.value = dietType;
-                    
-                    // Update preferences textarea
-                    let currentPreferences = preferencesTextarea.value;
-                    if (currentPreferences) {
-                        currentPreferences += '\n';
-                    }
-                    preferencesTextarea.value = `Diet type: ${dietType}\n${currentPreferences}`;
                 });
             });
         });

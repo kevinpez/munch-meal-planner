@@ -26,11 +26,8 @@ def generate_meal_plan():
         
         if not preferences:
             raise BadRequest("Preferences are required")
-
-        # Combine diet type with preferences if it exists
-        full_preferences = f"Diet type: {diet_type}. " + preferences if diet_type else preferences
         
-        meal_data = ai_service.generate_meal_suggestion(full_preferences)
+        meal_data = ai_service.generate_meal_suggestion(preferences, diet_type)
         if not meal_data:
             flash('Could not generate meal suggestion. Please try again.', 'error')
             return redirect(url_for('main.home'))
