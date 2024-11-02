@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, SubmitField, StringField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, Length, ValidationError
 from app.models import User
 
 class PreferencesForm(FlaskForm):

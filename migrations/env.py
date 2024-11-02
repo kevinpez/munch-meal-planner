@@ -90,17 +90,14 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info('No changes in schema detected.')
 
-    conf_args = current_app.extensions['migrate'].configure_args
-    if conf_args.get("process_revision_directives") is None:
-        conf_args["process_revision_directives"] = process_revision_directives
-
     connectable = get_engine()
 
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=get_metadata(),
-            **conf_args
+            process_revision_directives=process_revision_directives,
+            **current_app.extensions['migrate'].configure_args
         )
 
         with context.begin_transaction():

@@ -1,8 +1,8 @@
 """initial migration
 
-Revision ID: b381b38cbac6
+Revision ID: 47d17cb1a147
 Revises: 
-Create Date: 2024-11-01 23:13:23.736112
+Create Date: 2024-11-02 10:15:28.201202
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'b381b38cbac6'
+revision = '47d17cb1a147'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,12 +29,21 @@ def upgrade():
         batch_op.create_index(batch_op.f('ix_user_email'), ['email'], unique=True)
         batch_op.create_index(batch_op.f('ix_user_username'), ['username'], unique=True)
 
+    op.create_table('grocery_item',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=200), nullable=False),
+    sa.Column('is_checked', sa.Boolean(), nullable=True),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('recipe',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=100), nullable=False),
     sa.Column('ingredients', sa.Text(), nullable=True),
     sa.Column('instructions', sa.Text(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('image_url', sa.String(length=500), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -50,6 +59,7 @@ def downgrade():
         batch_op.drop_index(batch_op.f('ix_recipe_name'))
 
     op.drop_table('recipe')
+    op.drop_table('grocery_item')
     with op.batch_alter_table('user', schema=None) as batch_op:
         batch_op.drop_index(batch_op.f('ix_user_username'))
         batch_op.drop_index(batch_op.f('ix_user_email'))

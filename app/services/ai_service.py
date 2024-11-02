@@ -32,7 +32,8 @@ class AIService:
                 "calories": "estimated calories",
                 "tips": ["cooking tip 1", "cooking tip 2"],
                 "benefits": ["health benefit 1", "health benefit 2"],
-                "dietary_info": ["vegetarian", "gluten-free", etc]
+                "dietary_info": ["vegetarian", "gluten-free", etc],
+                "image_url": "https://example.com/image.jpg (use a real, relevant food image URL)"
             }"""
             
             response = client.chat.completions.create(

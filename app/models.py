@@ -4,14 +4,21 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db, login
 from sqlalchemy.orm import validates
 from typing import Optional
+from datetime import datetime
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False, index=True)
-    ingredients = db.Column(db.Text, nullable=True)
-    instructions = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
-    image_url = db.Column(db.String(500), nullable=True)
+    name = db.Column(db.String(200), nullable=False)
+    ingredients = db.Column(db.Text, nullable=False)
+    instructions = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, **kwargs):
+        if not kwargs.get('name'):
+            raise ValueError("Recipe name cannot be empty")
+        super(Recipe, self).__init__(**kwargs)
 
     @validates('name')
     def validate_name(self, key, name):
@@ -30,12 +37,22 @@ class Recipe(db.Model):
             return '\n'.join(str(item).strip() for item in value)
         return str(value).strip()
 
+    @validates('image_url')
+    def validate_image_url(self, key, url):
+        if url:
+            if not (url.startswith(('http://', 'https://')) or url.startswith('images/')):
+                raise ValueError("Image URL must start with http://, https://, or images/")
+            if len(url) > 500:
+                raise ValueError("Image URL must be less than 500 characters")
+        return url
+
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
             'ingredients': self.ingredients,
-            'instructions': self.instructions
+            'instructions': self.instructions,
+            'image_url': self.image_url
         }
 
     def __repr__(self):
@@ -74,6 +91,19 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+class GroceryItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    is_checked = db.Column(db.Boolean, default=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'is_checked': self.is_checked
+        }
 
 @login.user_loader
 def load_user(id):

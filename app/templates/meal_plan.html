@@ -1,92 +1,57 @@
 <!-- app/templates/meal_plan.html -->
 {% extends "base.html" %}
+
 {% block content %}
-    {% if error %}
-        <div class="alert alert-danger" role="alert">
-            {{ error }}
-        </div>
-    {% else %}
-        <div class="recipe-card">
-            {% if image_url %}
-                <div class="recipe-image">
-                    <img src="{{ image_url }}" alt="{{ meal.name }}" class="img-fluid rounded">
-                </div>
-            {% endif %}
+<div class="container">
+    <h2 class="mb-4">Your Meal Plan</h2>
+
+    {% if meal %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title">{{ meal.name }}</h3>
             
-            <div class="recipe-content">
-                <h2 class="recipe-title">{{ meal.name }}</h2>
-                <div class="recipe-description">{{ meal.description }}</div>
-                
-                <div class="recipe-meta">
-                    <div class="meta-item">
-                        <span class="meta-label">Prep Time:</span> {{ meal.prep_time }}
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Cook Time:</span> {{ meal.cook_time }}
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Total Time:</span> {{ meal.total_time }}
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Servings:</span> {{ meal.servings }}
-                    </div>
-                    <div class="meta-item">
-                        <span class="meta-label">Calories:</span> {{ meal.calories }}
-                    </div>
-                </div>
+            {% if meal.image_url %}
+            <img src="{{ meal.image_url }}" class="img-fluid mb-3" alt="{{ meal.name }}">
+            {% endif %}
 
-                <div class="recipe-section">
-                    <h3>Ingredients</h3>
-                    <ul class="ingredients-list">
-                        {% for ingredient in meal.ingredients %}
-                            <li>{{ ingredient }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="recipe-section">
-                    <h3>Instructions</h3>
-                    <ol class="instructions-list">
-                        {% for instruction in meal.instructions %}
-                            <li>{{ instruction }}</li>
-                        {% endfor %}
-                    </ol>
-                </div>
-
-                <div class="recipe-section">
-                    <h3>Chef's Tips</h3>
-                    <ul class="tips-list">
-                        {% for tip in meal.tips %}
-                            <li>{{ tip }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="recipe-section">
-                    <h3>Health Benefits</h3>
-                    <ul class="benefits-list">
-                        {% for benefit in meal.benefits %}
-                            <li>{{ benefit }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div class="recipe-section">
-                    <h3>Dietary Information</h3>
-                    <div class="dietary-tags">
-                        {% for info in meal.dietary_info %}
-                            <span class="dietary-tag">{{ info }}</span>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <form method="post" action="{{ url_for('main.save_recipe') }}" class="mt-4">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="recipe_name" value="{{ meal.name }}">
-                    <input type="hidden" name="image_url" value="{{ image_url }}">
-                    <button type="submit" class="btn btn-primary">Save to Cookbook</button>
-                </form>
+            <div class="recipe-section">
+                <h4>Ingredients</h4>
+                <ul class="ingredients-list">
+                    {% for ingredient in meal.ingredients %}
+                        <li>{{ ingredient }}</li>
+                    {% endfor %}
+                </ul>
             </div>
+
+            <div class="recipe-section">
+                <h4>Instructions</h4>
+                <ol class="instructions-list">
+                    {% for instruction in meal.instructions %}
+                        <li>{{ instruction }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+
+            <form method="post" action="{{ url_for('main.save_recipe') }}">
+                {{ save_recipe_form.csrf_token }}
+                <input type="hidden" name="recipe_name" value="{{ meal.name }}">
+                <input type="hidden" name="ingredients" value="{{ meal.ingredients|join('\n') }}">
+                <input type="hidden" name="instructions" value="{{ meal.instructions|join('\n') }}">
+                {% if meal.image_url %}
+                    <!-- Debug output -->
+                    <!-- {{ meal.image_url }} -->
+                    <input type="hidden" name="image_url" value="{{ meal.image_url }}">
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Save Recipe</button>
+            </form>
         </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        No meal plan generated yet. Please go back and enter your preferences.
+    </div>
     {% endif %}
+
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Back to Home</a>
+</div>
 {% endblock %}
