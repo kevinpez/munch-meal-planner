@@ -81,16 +81,28 @@
             dietButtons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    // Remove selected class from all buttons
                     dietButtons.forEach(btn => btn.classList.remove('selected'));
-                    // Add selected class to clicked button
                     this.classList.add('selected');
-                    // Update hidden input
                     const dietType = this.getAttribute('data-diet');
                     selectedDietInput.value = dietType;
                 });
             });
+
+            const mealPlanForm = document.querySelector('form[action*="generate-meal-plan"]');
+            if (mealPlanForm) {
+                mealPlanForm.addEventListener('submit', function() {
+                    document.getElementById('loadingOverlay').style.display = 'flex';
+                });
+            }
         });
     </script>
+
+    <!-- Add this right after the <body> tag -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="text-center">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Generating your meal plan...</div>
+        </div>
+    </div>
 </body>
 </html>
