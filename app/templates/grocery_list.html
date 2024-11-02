@@ -4,11 +4,45 @@
 <h2 class="mb-4">Your Grocery List</h2>
 <div class="card">
     <div class="card-body">
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush" id="groceryList">
             {% for ingredient in ingredients %}
-            <li class="list-group-item">{{ ingredient }}</li>
+            <li class="list-group-item">
+                <div class="form-check">
+                    <input class="form-check-input grocery-item" type="checkbox" id="ingredient-{{ loop.index }}">
+                    <label class="form-check-label" for="ingredient-{{ loop.index }}">
+                        {{ ingredient }}
+                    </label>
+                </div>
+            </li>
             {% endfor %}
         </ul>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load saved checkbox states
+        const groceryItems = document.querySelectorAll('.grocery-item');
+        groceryItems.forEach(item => {
+            const isChecked = localStorage.getItem(item.id);
+            if (isChecked === 'true') {
+                item.checked = true;
+                item.closest('label').classList.add('text-muted');
+            }
+
+            // Add change event listener
+            item.addEventListener('change', function() {
+                localStorage.setItem(this.id, this.checked);
+                const label = this.closest('label');
+                if (this.checked) {
+                    label.classList.add('text-muted');
+                } else {
+                    label.classList.remove('text-muted');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}

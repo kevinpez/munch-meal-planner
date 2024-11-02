@@ -339,3 +339,24 @@ button:hover {
     bottom: 0;
     transform: rotate(-45deg);
 }
+
+.grocery-item:checked + label {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+    margin-bottom: 0;
+    flex-grow: 1;
+}

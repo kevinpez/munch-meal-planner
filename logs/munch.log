@@ -104,3 +104,4 @@ Exception: Install 'email_validator' for email validation support.
 2024-11-02 09:22:07,643 ERROR: Error in generate_meal_plan: generate_meal_suggestion() takes from 2 to 3 positional arguments but 4 were given [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:45]
 2024-11-02 09:23:02,271 ERROR: Error in generate_meal_plan: generate_meal_suggestion() takes from 2 to 3 positional arguments but 4 were given [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:45]
 2024-11-02 09:23:50,145 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-02 09:36:47,048 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
