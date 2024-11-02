@@ -10,7 +10,7 @@ Munch is a personalized meal planning application that uses OpenAI's GPT model t
 - Session management for logged-in users
 
 ### Meal Planning
-- AI-powered meal suggestions based on dietary preferences
+- AI-powered meal suggestions based on dietary preferences and allergies
 - Support for multiple diet types:
   - Vegetarian
   - Vegan
@@ -18,6 +18,13 @@ Munch is a personalized meal planning application that uses OpenAI's GPT model t
   - Paleo
   - Gluten-Free
   - Balanced
+- Common allergy filters:
+  - Tree Nuts
+  - Peanuts
+  - Dairy
+  - Eggs
+  - Shellfish
+  - Soy
 - Detailed recipe information including:
   - Ingredients list
   - Step-by-step instructions
@@ -38,6 +45,7 @@ Munch is a personalized meal planning application that uses OpenAI's GPT model t
 - Smart grocery list generation based on saved recipes
 - Security features including CSRF protection and secure headers
 - Error handling and user feedback system
+- Loading indicators for AI operations
 
 ## Technical Requirements
 
@@ -62,5 +70,6 @@ Munch is a personalized meal planning application that uses OpenAI's GPT model t
 2. Create and activate a virtual environment:
    ```bash
    pip install -r requirements.txt
+   ```
 
 ## Database Setup
