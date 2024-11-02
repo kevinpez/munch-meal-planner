@@ -1,9 +1,9 @@
 from openai import OpenAI
 from typing import Optional, Dict, Any
 import json
-from app import app
+from flask import current_app
 
-client = OpenAI(api_key=app.config['OPENAI_API_KEY'])
+client = OpenAI(api_key=current_app.config['OPENAI_API_KEY'])
 
 class AIService:
     @staticmethod
@@ -34,9 +34,9 @@ class AIService:
                     raise ValueError("Missing required fields in response")
                 return meal_data
             except json.JSONDecodeError:
-                app.logger.error("Failed to parse AI response as JSON")
+                current_app.logger.error("Failed to parse AI response as JSON")
                 return None
                 
         except Exception as e:
-            app.logger.error(f"Error generating meal suggestion: {str(e)}")
+            current_app.logger.error(f"Error generating meal suggestion: {str(e)}")
             return None 

@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_wtf.csrf import CSRFProtect
 from logging.config import dictConfig
+from app.config import Config
 
 # Configure logging
 dictConfig({
@@ -28,11 +29,9 @@ db = SQLAlchemy()
 migrate = Migrate()
 csrf = CSRFProtect()
 
-def create_app():
+def create_app(config_class=Config):
     app = Flask(__name__)
-    
-    # Load config
-    app.config.from_object('app.config.Config')
+    app.config.from_object(config_class)
 
     # Initialize extensions
     db.init_app(app)

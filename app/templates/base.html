@@ -13,20 +13,20 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('home') }}">Munch Meal Planner</a>
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">Munch Meal Planner</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                        <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('cookbook') }}">Cookbook</a>
+                        <a class="nav-link" href="{{ url_for('main.cookbook') }}">Cookbook</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('grocery_list') }}">Grocery List</a>
+                        <a class="nav-link" href="{{ url_for('main.grocery_list') }}">Grocery List</a>
                     </li>
                 </ul>
             </div>
