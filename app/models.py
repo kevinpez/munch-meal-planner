@@ -1,16 +1,16 @@
 # app/models.py
-from app import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from app.extensions import db, login
 from sqlalchemy.orm import validates
 from typing import Optional
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, index=True)
     ingredients = db.Column(db.Text, nullable=True)
     instructions = db.Column(db.Text, nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
 
     @validates('name')
     def validate_name(self, key, name):
@@ -55,3 +55,7 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))

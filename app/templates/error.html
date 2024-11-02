@@ -3,6 +3,9 @@
 <div class="alert alert-danger">
     <h4>Error</h4>
     <p>{{ error }}</p>
+    {% if debug and traceback %}
+    <pre class="mt-3">{{ traceback }}</pre>
+    {% endif %}
     <a href="{{ url_for('main.home') }}" class="btn btn-primary mt-3">Return Home</a>
 </div>
 {% endblock %}

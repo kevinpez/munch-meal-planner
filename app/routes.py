@@ -7,6 +7,7 @@ from app.forms import PreferencesForm, LoginForm, RegistrationForm
 from werkzeug.exceptions import BadRequest
 from sqlalchemy.exc import SQLAlchemyError
 from flask_login import login_user, logout_user, login_required, current_user
+import traceback
 
 bp = Blueprint('main', __name__)
 ai_service = AIService()
@@ -45,14 +46,19 @@ def generate_meal_plan():
         return redirect(url_for('main.home'))
 
 @bp.route('/save-recipe', methods=['POST'])
+@login_required
 def save_recipe():
     try:
         recipe_name = request.form.get('recipe_name')
         if not recipe_name:
             raise BadRequest('Recipe name is required')
 
-        # Check if recipe already exists
-        existing_recipe = Recipe.query.filter_by(name=recipe_name).first()
+        # Check if recipe already exists for this user
+        existing_recipe = Recipe.query.filter_by(
+            name=recipe_name, 
+            user_id=current_user.id
+        ).first()
+        
         if existing_recipe:
             flash('Recipe already saved', 'info')
             return redirect(url_for('main.cookbook'))
@@ -74,7 +80,8 @@ def save_recipe():
         new_recipe = Recipe(
             name=recipe_name,
             ingredients=ingredients,
-            instructions=instructions
+            instructions=instructions,
+            user_id=current_user.id
         )
         
         db.session.add(new_recipe)
@@ -82,18 +89,10 @@ def save_recipe():
         flash('Recipe saved successfully!', 'success')
         return redirect(url_for('main.cookbook'))
 
-    except BadRequest as e:
-        flash(str(e), 'error')
-        return redirect(url_for('main.home'))
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        current_app.logger.error(f"Database error in save_recipe: {str(e)}")
-        flash('Error saving recipe', 'error')
-        return redirect(url_for('main.home'))
     except Exception as e:
         db.session.rollback()
-        current_app.logger.error(f"Unexpected error in save_recipe: {str(e)}")
-        flash('An unexpected error occurred', 'error')
+        current_app.logger.error(f"Error saving recipe: {str(e)}")
+        flash('Error saving recipe', 'error')
         return redirect(url_for('main.home'))
 
 @bp.route('/cookbook')
@@ -161,17 +160,32 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
+            current_app.logger.info(f'Attempting to register user: {form.username.data}')
+            
             user = User(username=form.username.data, email=form.email.data)
             user.set_password(form.password.data)
+            
+            current_app.logger.info('User object created, attempting database save')
+            
             db.session.add(user)
             db.session.commit()
+            
             current_app.logger.info(f'Successfully registered user: {user.username}')
             flash('Congratulations, you are now registered!', 'success')
             return redirect(url_for('main.login'))
+            
         except Exception as e:
             db.session.rollback()
-            current_app.logger.error(f'Error registering user: {str(e)}')
-            flash('Registration failed. Please try again.', 'error')
-            return redirect(url_for('main.register'))
+            current_app.logger.error(f'Registration error: {str(e)}')
+            current_app.logger.error(f'Error type: {type(e).__name__}')
+            current_app.logger.error(f'Traceback: {traceback.format_exc()}')
             
+            # Return the error page with the actual error
+            return render_template('error.html', 
+                                 error=f"Registration failed: {str(e)}", 
+                                 traceback=traceback.format_exc()), 500
+    
+    if form.errors:
+        current_app.logger.error(f'Form validation errors: {form.errors}')
+    
     return render_template('auth/register.html', title='Register', form=form)
