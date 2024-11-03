@@ -53,3 +53,4 @@
 2024-11-02 14:25:57,874 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
 2024-11-02 14:26:26,154 ERROR: Error getting recipe details: 'base_item' [in /home/kevin-pesenecker/Documents/code/munch/app/services/ai_service.py:109]
 2024-11-02 14:27:08,548 ERROR: Error generating meal suggestion: Expecting ',' delimiter: line 6 column 118 (char 901) [in /home/kevin-pesenecker/Documents/code/munch/app/services/ai_service.py:53]
+2024-11-02 20:27:26,046 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
