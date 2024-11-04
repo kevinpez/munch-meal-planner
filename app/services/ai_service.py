@@ -4,10 +4,11 @@ import json
 from flask import current_app
 from app.prompts import get_meal_suggestion_prompt, get_recipe_details_prompt
 
+
 class AIService:
     def __init__(self):
         self.client = None
-    
+
     def _ensure_client(self):
         if not self.client:
             self.client = OpenAI(api_key=current_app.config['OPENAI_API_KEY'])
@@ -18,7 +19,7 @@ class AIService:
         try:
             client = self._ensure_client()
             sanitized_preferences = self.validate_and_clean_input(preferences)
-            
+
             system_message = """You are a meal planning assistant. Respond with valid JSON containing:
             {
                 "name": "recipe name",
@@ -35,7 +36,7 @@ class AIService:
                 "dietary_info": ["vegetarian", "gluten-free", etc],
                 "image_url": "https://example.com/image.jpg (use a real, relevant food image URL)"
             }"""
-            
+
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -46,9 +47,9 @@ class AIService:
                 max_tokens=800,
                 response_format={"type": "json_object"}
             )
-            
+
             return json.loads(response.choices[0].message.content)
-            
+
         except Exception as e:
             current_app.logger.error(f"Error generating meal suggestion: {str(e)}")
             return None
@@ -63,7 +64,7 @@ class AIService:
         try:
             client = self._ensure_client()
             sanitized_name = self.validate_and_clean_input(meal_name)
-            
+
             response = client.images.generate(
                 model="dall-e-3",
                 prompt=f"A professional food photography style image of {sanitized_name}, on a beautiful plate with garnish, overhead view",
@@ -71,9 +72,9 @@ class AIService:
                 quality="standard",
                 n=1,
             )
-            
+
             return response.data[0].url
-            
+
         except Exception as e:
             current_app.logger.error(f"Error generating image: {str(e)}")
             return None
@@ -83,7 +84,7 @@ class AIService:
             client = self._ensure_client()
             sanitized_name = self.validate_and_clean_input(recipe_name)
             prompt = get_recipe_details_prompt(sanitized_name)
-            
+
             response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
@@ -94,17 +95,17 @@ class AIService:
                 temperature=0.7,
                 response_format={"type": "json_object"}
             )
-            
+
             result = json.loads(response.choices[0].message.content)
-            
+
             # Convert ingredients to string format for storage
             if 'ingredients' in result:
                 result['ingredients_list'] = [item['item'] for item in result['ingredients']]
                 result['base_ingredients'] = [item['base_item'] for item in result['ingredients']]
                 result['ingredients'] = '\n'.join(result['ingredients_list'])
-                
+
             return result
-            
+
         except Exception as e:
             current_app.logger.error(f"Error getting recipe details: {str(e)}")
             return None

@@ -1,56 +1,66 @@
-2024-11-02 10:15:00,304 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:15:27,920 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:15:42,067 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:17:00,757 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:17:30,807 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:18:23,522 INFO: Starting registration process for username: Kevin Pesenecker [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:171]
-2024-11-02 10:18:23,600 INFO: Successfully registered user: Kevin Pesenecker [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:180]
-2024-11-02 10:21:59,234 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:24:58,614 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:25:24,488 ERROR: Error saving recipe: Recipe name cannot be empty [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:88]
-2024-11-02 10:26:26,317 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:26:43,338 ERROR: Error generating meal suggestion: Expecting ',' delimiter: line 6 column 118 (char 846) [in /home/kevin-pesenecker/Documents/code/munch/app/services/ai_service.py:52]
-2024-11-02 10:27:08,293 ERROR: Error in generate_meal_plan: 'form' is undefined [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:45]
-2024-11-02 10:28:10,496 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:28:54,029 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:31:20,719 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:33:51,371 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:34:10,526 ERROR: Error saving recipe: (sqlite3.OperationalError) table recipe has no column named created_at
-[SQL: INSERT INTO recipe (name, ingredients, instructions, image_url, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?)]
-[parameters: ('Black Bean and Quinoa Stuffed Bell Peppers', '4 large bell peppers\r\n1 can black beans, drained and rinsed\r\n1 cup cooked quinoa\r\n1 onion, diced\r\n2 cloves garlic, minced\r\n1 teaspoon cumin ... (13 characters truncated) ... n chili powder\r\n1/2 cup corn kernels\r\n1/2 cup diced tomatoes\r\n1/2 cup shredded cheese\r\nSalt and pepper to taste\r\nFresh cilantro for garnish', 'Preheat oven to 375°F (190°C).\r\nCut the tops off the bell peppers and remove seeds and membranes.\r\nIn a skillet, sauté onions and garlic until tr ... (169 characters truncated) ... .\r\nTop with shredded cheese and cover with foil.\r\nBake for 25-30 minutes until peppers are tender.\r\nGarnish with fresh cilantro before serving.', 'https://www.cookingclassy.com/wp-content/uploads/2018/03/quinoa-black-bean-stuffed-bell-peppers-9-500x500.jpg', 1, '2024-11-02 16:34:10.526276')]
-(Background on this error at: https://sqlalche.me/e/20/e3q8) [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:86]
-2024-11-02 10:35:40,290 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:35:46,035 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:35:51,096 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:36:32,836 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 10:42:30,594 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:09:10,231 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:15:12,624 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:18:34,016 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:21:21,382 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:25:52,478 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:26:30,747 ERROR: Error saving recipe: Image URL must start with http:// or https:// [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:93]
-2024-11-02 13:28:03,527 ERROR: Error saving recipe: Image URL must start with http:// or https:// [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:93]
-2024-11-02 13:30:38,949 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:33:39,830 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:44:37,952 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:50:31,987 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:50:46,741 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:55:45,481 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:57:42,465 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:58:02,848 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:58:20,222 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:58:56,540 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:58:57,282 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 13:58:58,056 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:06:19,867 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:06:35,755 INFO: Starting registration process for username: Kevin Pesenecker [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:175]
-2024-11-02 14:06:35,860 INFO: Successfully registered user: Kevin Pesenecker [in /home/kevin-pesenecker/Documents/code/munch/app/routes.py:184]
-2024-11-02 14:10:30,578 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:15:10,478 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:17:39,608 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:20:33,429 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:25:57,874 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
-2024-11-02 14:26:26,154 ERROR: Error getting recipe details: 'base_item' [in /home/kevin-pesenecker/Documents/code/munch/app/services/ai_service.py:109]
-2024-11-02 14:27:08,548 ERROR: Error generating meal suggestion: Expecting ',' delimiter: line 6 column 118 (char 901) [in /home/kevin-pesenecker/Documents/code/munch/app/services/ai_service.py:53]
-2024-11-02 20:27:26,046 INFO: Munch startup [in /home/kevin-pesenecker/Documents/code/munch/app/utils/logger.py:15]
+2024-11-03 17:50:36,069 ERROR: Traceback: Traceback (most recent call last):
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: user
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\routes.py", line 190, in register
+    if form.validate_on_submit():
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\flask_wtf\form.py", line 86, in validate_on_submit
+    return self.is_submitted() and self.validate(extra_validators=extra_validators)
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\wtforms\form.py", line 329, in validate
+    return super().validate(extra)
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\wtforms\form.py", line 146, in validate
+    if not field.validate(self, extra):
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\wtforms\fields\core.py", line 246, in validate
+    stop_validation = self._run_validation_chain(form, chain)
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\wtforms\fields\core.py", line 266, in _run_validation_chain
+    validator(form, self)
+  File "c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\forms.py", line 44, in validate_username
+    user = User.query.filter_by(username=username.data).first()
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\orm\query.py", line 2728, in first
+    return self.limit(1)._iter().first()  # type: ignore
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\orm\query.py", line 2827, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\orm\session.py", line 2362, in execute
+    return self._execute_internal(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\orm\session.py", line 2247, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\orm\context.py", line 305, in orm_execute_statement
+    result = conn.execute(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1418, in execute
+    return meth(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\sql\elements.py", line 515, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1640, in _execute_clauseelement
+    ret = self._execute_context(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\pinokio\bin\miniconda\envs\munch-meal-planner\lib\site-packages\sqlalchemy\engine\default.py", line 941, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: user
+[SQL: SELECT user.id AS user_id, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash 
+FROM user 
+WHERE user.username = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('Kevin Pesenecker', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+ [in c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\routes.py:207]
+2024-11-03 17:52:22,121 INFO: Munch startup [in C:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\utils\logger.py:15]
+2024-11-03 17:52:38,194 INFO: Munch startup [in C:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\utils\logger.py:15]
+2024-11-03 17:52:52,296 INFO: Munch startup [in C:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\utils\logger.py:15]
+2024-11-03 17:53:01,191 INFO: Munch startup [in C:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\utils\logger.py:15]
+2024-11-03 18:04:41,247 INFO: Munch startup [in c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\utils\logger.py:15]
+2024-11-03 18:05:00,808 INFO: Starting registration process for username: Kevin Pesenecker [in c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\routes.py:191]
+2024-11-03 18:05:00,900 INFO: Successfully registered user: Kevin Pesenecker [in c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\routes.py:200]
+2024-11-03 18:05:05,014 ERROR: Error generating meal suggestion: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable [in c:\Users\kevin\OneDrive\Documents\Code\munch-meal-planner\app\services\ai_service.py:54]
